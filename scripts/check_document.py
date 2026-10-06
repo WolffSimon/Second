@@ -54,7 +54,7 @@ VERB_HINT = re.compile(
     r"|measures?|reduced|reduces?|prioritised|represented|knows?|knew|explained|audited|fed|scaled|influenced|documented"
     r"|presented|queried|sold|sells?|drew|checked|checks?|judged|caught|appeared|planned|absorbed|forecast|includes?|included"
     r"|covers?|covered|means|meant|instituted|oversaw|negotiated|executed|appointed|restored|promoted|redesigned|consolidated"
-    r"|routes?|routed|stayed|stays?|let|lets|flagged|flags?|added|adds?|removed|removes?|resolved|resolves?|cleared|ended|ends?|grew|launched|migrated|integrated|automated|tracked|tested|wanted|offered|became|becomes?|remained|remains?|continued)\b",
+    r"|routes?|routed|relied|relies|rely|stayed|stays?|let|lets|flagged|flags?|added|adds?|removed|removes?|resolved|resolves?|cleared|ended|ends?|grew|launched|migrated|integrated|automated|tracked|tested|wanted|offered|became|becomes?|remained|remains?|continued)\b",
     re.I,
 )
 
@@ -103,6 +103,28 @@ def no_verb_sentences(paragraphs):
     return hits
 
 
+def structure_problems(path):
+    """Faults Word reports as a corrupt file: a table cell that does not end in a paragraph,
+    duplicate or unbalanced bookmarks, and duplicate paragraph ids (all common after copying rows)."""
+    import zipfile
+    from lxml import etree
+    w = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
+    w14 = "{http://schemas.microsoft.com/office/word/2010/wordml}"
+    root = etree.fromstring(zipfile.ZipFile(path).read("word/document.xml"))
+    problems = []
+    empty = sum(1 for tc in root.iter(w + "tc") if not [k for k in tc if k.tag != w + "tcPr"] or [k for k in tc if k.tag != w + "tcPr"][-1].tag != w + "p")
+    if empty:
+        problems.append(f"{empty} table cell(s) not ending in a paragraph")
+    starts = [b.get(w + "id") for b in root.iter(w + "bookmarkStart")]
+    ends = {b.get(w + "id") for b in root.iter(w + "bookmarkEnd")}
+    if len(starts) != len(set(starts)) or set(starts) != ends:
+        problems.append("duplicate or unbalanced bookmarks")
+    ids = [p.get(w14 + "paraId") for p in root.iter(w + "p") if p.get(w14 + "paraId")]
+    if len(ids) != len(set(ids)):
+        problems.append("duplicate paragraph ids")
+    return problems
+
+
 def page_count(path):
     try:
         out = tempfile.mkdtemp()
@@ -131,6 +153,9 @@ def main(path):
         print(f"NOVERB  {sentence}")
     for number, count in sorted(repeated_numbers(text).items(), key=lambda x: -x[1]):
         print(f"REPEAT  {number} appears {count} times (advisory)")
+    for problem in structure_problems(path):
+        found = True
+        print(f"CORRUPT {problem} (Word may refuse to open the file)")
     pages = page_count(path)
     if pages is not None:
         print(f"PAGES   {pages}")

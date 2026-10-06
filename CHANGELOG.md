@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.1, October 2026
+
+- `check_document.py` reports structural faults that make Word refuse to open a file (a table cell with nothing after its content, duplicate or unbalanced bookmarks, duplicate paragraph ids) and recognises a few more common verbs.
+- `docx_helpers.set_bullets` no longer copies bookmarks or paragraph ids when it adds an entry, which was the source of those faults.
+
 ## 2.0, October 2026
 
 - **The cold review loop.** Every finished document now goes to a fresh reviewer that sees only the job description, the CV as text and the style guide. Findings are triaged (accept, reject with a reason, ask the person), fixes are checked against the inventory, and rounds repeat with a new reviewer until a round finds nothing of high or medium severity that the builder can fix, or three have run. New: `WORKFLOW.md`, `skills/cold-review-loop`, `.claude/agents/cold-reviewer.md`, `scripts/review_round.sh`, `scripts/export_cv_text.py`.

@@ -47,11 +47,25 @@ def bullets(cell):
     return [p for p in cell.paragraphs if p.style.name == BULLET_STYLE and p.text.strip()]
 
 
+W14_NS = "http://schemas.microsoft.com/office/word/2010/wordml"
+
+
+def _strip_copied_ids(element):
+    """A copied paragraph must not carry the original's bookmarks or paragraph ids; Word reports duplicates as corruption."""
+    for tag in ("bookmarkStart", "bookmarkEnd"):
+        for el in element.findall(".//{http://schemas.openxmlformats.org/wordprocessingml/2006/main}" + tag):
+            el.getparent().remove(el)
+    for el in [element] + list(element.iter()):
+        for attr in ("paraId", "textId"):
+            el.attrib.pop("{%s}%s" % (W14_NS, attr), None)
+
+
 def set_bullets(cell, texts):
     """Rewrite a cell's bullet list to exactly these texts, one theme per bullet."""
     existing = bullets(cell)
     while len(existing) < len(texts):
         new = copy.deepcopy(existing[-1]._p)
+        _strip_copied_ids(new)
         existing[-1]._p.addnext(new)
         existing.append(Paragraph(new, existing[-1]._parent))
     for paragraph, text in zip(existing, texts):
