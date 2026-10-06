@@ -1,0 +1,12 @@
+# Your private archive never goes in a public repository.
+archive/
+review/
+CLAUDE.md
+*.txt
+*.docx
+*.pdf
+
+# Local clutter
+__pycache__/
+*.pyc
+.DS_Store

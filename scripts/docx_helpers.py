@@ -2,7 +2,7 @@
 
 The template assumed here: a profile of plain paragraphs, four capability blocks
 each written as one paragraph whose first run is a bold label and whose second run
-is the body, and a career table whose cells hold bullet paragraphs styled
+is the body, and a career table whose cells hold the role entries as paragraphs styled
 "List Paragraph". Adjust the style name if your template differs.
 """
 import copy
@@ -69,6 +69,8 @@ def find_paragraph(document, prefix):
 
 if __name__ == "__main__":
     import sys
+    if len(sys.argv) != 2:
+        sys.exit("usage: python docx_helpers.py path/to/cv.docx  (prints the document's paragraphs)")
     doc = Document(sys.argv[1])
     for p in doc.paragraphs:
         if p.text.strip():

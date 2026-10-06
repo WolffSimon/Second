@@ -1,52 +1,117 @@
 # Second
 
-A human-first, AI-augmented job search. By Matthew Wolff Simon. A work coach built with Claude: the second in your corner, not the fighter in the ring. This project is independent and is not affiliated with, endorsed by or sponsored by Anthropic; "Claude" is used only to name the assistant it is designed to work with.
+A human-first, AI-assisted job search. Second is a method and a toolset for running a senior job search with Claude as staff. The person decides. The assistant writes, checks, records and asks. A second assistant, which has seen none of the work, reviews every document cold before it goes out.
 
-A method for running a senior job search with an AI assistant as staff, not as oracle. The human decides; the assistant writes, checks, records and asks. Everything here was built in a live search and refined against real rejections.
+The name is the boxer's second: the coach in the corner who watches, advises and hands over the towel, but never throws a punch. It is also the second pass, the check that turns a first draft into a document.
 
-## Preface
+This project is independent. It is not affiliated with, endorsed by or sponsored by Anthropic. "Claude" is used only to name the assistant it was built to work with.
 
-In running a job search and application process for several months, with Claude as staff, I came to some realisations. If you ask Claude to help you apply for a job, it will select the right qualifications for the application and write you a good CV. That is the easy part, and it is also the dangerous part. Mass applying at the fastest possible speed is bad for everyone. It overcrowds recruiters and it gives them low-quality CVs, and a low-quality CV with your name on it is worse than none.
+## Why it exists
 
-Claude is an excellent tool with syndromes that work against showing what you have done. It reassures. It advises you to rest, to eat and to sleep, and it puts you to bed with some regularity. It sometimes balks at a job because it judges the seat beneath you, or the salary out of line with objectives you never stated. It writes in noun phrases of the Robert Ludlum kind, so that a review becomes the Benares Review Exercise. It reaches for cliché and metaphor. It conflates different skills and achievements into composites that misrepresent you. It favours narrative over clarity and introduces you through your first job, your humble start and your origin story. Once it has coined a phrase for one application it reuses it in the next, so a helpful note that a rural office is fifteen minutes from your house appears in every application thereafter, relevant or not. And in an industry with jargon, it keeps the jargon.
+Ask an AI assistant to help with a job application and it will write a plausible CV in seconds. That is the easy part, and it is also the dangerous part. Mass applications at speed are bad for everyone: they crowd recruiters' inboxes, and a weak CV with your name on it does more harm than no CV at all.
 
-So I built this. A master prompt, which you ask it to consult every time the context is compacted, indexes everything else and carries the standing orders. A style guide improves the writing of CVs, notes and letters considerably. An inventory of accomplishments is the place you bank what you excavate from a long career. A dramatis personae keeps the people straight. An excavation skill exists because a model assumes that what it knows about you is everything about you, and will assume you lack experience you have. The second pass skill is the most valuable thing here: it reviews what has been written against the style guide and the job description, looks in your inventory for what is missing, and asks you for the rest.
+Second was built over several months of a live senior search and refined against real rejections. Along the way the assistant showed habits that work against showing what a person has done:
 
-The aim is to give you the best presentation you can make, to give recruiters the best information about you, and to make an AI a work coach and not a mass supplier of applications without context.
+- It reassures, and suggests a rest, when you asked for a document.
+- It judges a role beneath you, or a salary out of line, against objectives you never stated.
+- It writes in strings of nouns, so a review becomes "the operational resilience review exercise".
+- It reaches for metaphor and cliché.
+- It assembles true facts into composite claims you never made.
+- It introduces you through your first job and your origin story.
+- It reuses a phrase coined for one application in every application after it.
+- It keeps the jargon of the last industry it read about.
+- It assumes that what it knows about you is everything you have done.
+- It marks its own work, and passes it.
 
-## Deploying into Claude
+Each part of Second answers one of these.
 
-**In Claude.ai (web and desktop; a paid plan is required for custom skills).** Zip each skill folder on its own, so that the zip contains the folder with `SKILL.md` inside it, then go to Settings, Capabilities, Skills, and upload each zip. The uploader takes one skill per zip. The `name` in each `SKILL.md` is lowercase with hyphens and matches its folder name, and each description is under 200 characters, which Claude.ai requires. Ready-made zips for each skill are in `dist/`.
+## Getting started
 
-**The master prompt and the archive.** Create a Project. Paste `MASTER_PROMPT.md`, with your details filled in, into the Project's instructions. Add your private archive files to the Project's knowledge: your style guide, your accomplishments inventory, your dramatis personae and your project context. Whenever a long conversation is compacted, tell Claude to run the master prompt again; the skills persist, but the scene does not.
+Read in this order: this README, `MASTER_PROMPT.md`, `RUNBOOK.md`, `skills/prose-law/SKILL.md`, then `WORKFLOW.md`. The other skills are read when a step calls for them.
 
-**In Claude Code.** Copy the `skills/` folders into `.claude/skills/` in your working directory or `~/.claude/skills/` for all projects, or use `npx skills add <your-github-user>/<this-repo>` once you have published it.
+Then, for a first session:
 
-**Scripts.** `scripts/check_document.py` needs `python-docx`, and LibreOffice on the path for the page count. `scripts/docx_helpers.py` assumes a table-based CV template with bullet paragraphs styled "List Paragraph"; adjust the style name if yours differs.
+1. Copy the four files in `archive-templates/` into a private folder (call it `archive/`; it is excluded from git here). Fill in the project context and the cast list. Paste the prose law into the style guide where the template says.
+2. Start the inventory. The fastest way is to give Claude your current CV and ask it to run `excavation-interview` against it, era by era. Bank every answer in your own words.
+3. Fill in `MASTER_PROMPT.md` and set it up as described below.
+4. Give Claude a job description and ask for an assessment. If you want the role, ask for a build. The build runs the protocol and the second pass. In Claude Code the builder then runs the cold review rounds itself; in Claude.ai you carry each round to a new chat and bring the report back. Either way you end with a document and a short list of questions.
+5. Answer the questions. Claude banks the answers, applies them and runs one final review.
 
-## What this is
+## What is in the box
 
-Second is eight skills, a master prompt and an order of operations. The name is the boxer's second, the coach in the corner who watches, advises and hands you the towel; it is also the second pass, the skill that matters most. Each skill is a `SKILL.md` in the format used by Claude Skills: a name, a description that says when it applies, and a body that says how. Some carry `references/` and `scripts/`.
-
-- `MASTER_PROMPT.md` — run at the start of every session and after every context compaction. It sets the roles, the archive, the laws and the standing orders.
-- `RUNBOOK.md` — the order of operations for a new job description, a voice note, an application form, a recruiter note and a journal update.
-- `skills/prose-law` — the writing law. The other skills obey it. This is the important one.
-- `skills/cv-build-from-jd` — from a job description to a finished CV.
-- `skills/excavation-interview` — questions that surface experience the file does not hold.
-- `skills/receipts-inventory` — how to keep the accomplishments inventory the build depends on.
-- `skills/second-pass-rubric` — the check that turns a draft into a document.
-- `skills/voice-note-to-document` — dictate on a walk, return to a document.
-- `skills/recruiter-notes` — direct messages and emails to recruiters and hiring managers.
-- `skills/compliance-journal` — the dated activity record a benefits or work-coach journal needs.
-- `scripts/` — Word document helpers and a checker for banned phrases, repeated numbers and page count.
+| Path | What it is |
+|---|---|
+| `MASTER_PROMPT.md` | The standing instructions: the roles, the archive, the method and your own standing orders. |
+| `RUNBOOK.md` | The order of operations: a new job description, a wave of postings, a voice note, a rejection. |
+| `WORKFLOW.md` | The agentic loop: a build, a cold review and a triage, in rounds, until the document is clean; and how to run several builds in parallel. |
+| `skills/prose-law` | The writing law. Every other skill obeys it. This is the important one. |
+| `skills/cv-build-from-jd` | From a job description to a finished CV, in protocol order. |
+| `skills/cold-review-loop` | The review rounds: the reviewer brief, triage rules, stop rules and a triage log. |
+| `skills/second-pass-rubric` | The builder's own check: unanswered requirements, the inventory searched, questions asked. |
+| `skills/excavation-interview` | Questions that surface experience the archive does not yet hold. |
+| `skills/receipts-inventory` | How to keep the accomplishments inventory that every build depends on. |
+| `skills/recruiter-notes` | Notes and messages to recruiters, hiring managers and referrers. |
+| `skills/compliance-journal` | A dated work-search record, for a benefits system, an outplacement coach or your own discipline. |
+| `skills/voice-note-to-document` | Dictate on a walk; come back to a document. |
+| `.claude/agents/cold-reviewer.md` | The reviewer as a Claude Code subagent, with read-only tools and without your `CLAUDE.md`. |
+| `archive-templates/` | Empty starting files for your private archive. |
+| `scripts/` | Word-document helpers, a prose checker, a CV-to-text exporter, a headless review script and a script to rebuild `dist/`. |
+| `dist/` | One zip per skill, ready to upload to Claude.ai. |
 
 ## The two layers
 
-The method is public. The archive it runs on is private and never published: the inventory of a real person's receipts, the cast of recruiters and colleagues, the correspondence. Every example in these skills is a placeholder. If you adopt the method, your archive stays yours.
+The method is public. The archive it runs on is private and is never published.
+
+Your archive holds four files: a style guide (the prose law plus your own writing rulings), an accomplishments inventory, a cast list of the people in your search, and a project context with the live board and any facts about you that documents must state in one way only. Keep writing rules and personal facts apart: the cold reviewer reads your style guide, and must never read anything personal. Every example in the skills is a placeholder.
+
+## The loop, in one paragraph
+
+The builder reads the job description, reads the whole inventory, builds the CV from scratch, runs the prose law and its own second pass, and checks the result. Then a fresh reviewer receives three files and nothing else: the job description, the CV as plain text and the style guide. It reports a verdict, numbered findings and the three things nobody should cut. The builder triages every finding: accept, reject with a reason, or turn it into a question for you. It checks every accepted change against the inventory and never adds a fact on a reviewer's say-so. A new reviewer runs the next round. The builder stops when a round returns no high or medium finding that it can fix from the archive, or after three rounds, and brings you the remaining questions. After you answer, one final round runs. `WORKFLOW.md` has the detail.
+
+## Setting up
+
+### Claude.ai (web and desktop)
+
+1. Upload the skills. Go to Customize, then Skills, choose Add, and upload each zip from `dist/`. Each zip holds one skill folder with its `SKILL.md` at the root. Code execution must be enabled for skills to work. Skill names are lowercase with hyphens and under 64 characters, and each description is under 200 characters, as Claude.ai requires.
+2. Create a Project for the search. Paste `MASTER_PROMPT.md`, with your details filled in, into the Project's instructions. Add `RUNBOOK.md`, `WORKFLOW.md` and your four archive files to the Project's knowledge.
+3. For cold reviews, open a new chat outside the Project, so the reviewer cannot see your archive. If your account has memory turned on, use an incognito chat, so the reviewer cannot draw on it either. Paste the brief from `skills/cold-review-loop/references/reviewer_brief.md`, attach the three files it names, and replace the three paths in the brief with the names of the attachments.
+
+The Python scripts are not part of the skill zips. In Claude.ai, the skills tell Claude to make the same checks by reading.
+
+Whenever a long conversation is compacted, ask Claude to re-read the master prompt. The skills persist; the working context does not.
+
+### Claude Code
+
+1. Copy each folder in `skills/` into `.claude/skills/` in your working directory, or into `~/.claude/skills/` for every project.
+2. Copy `.claude/agents/cold-reviewer.md` into `.claude/agents/` (or `~/.claude/agents/`). A subagent starts with a fresh context, so the builder can hand each review to it. This one has read-only tools and is set not to load `CLAUDE.md`.
+3. Keep your archive in a folder such as `archive/`, and paste the filled-in master prompt into the project's `CLAUDE.md` or into your first message.
+4. For a review from the command line, run `bash scripts/review_round.sh` (see `WORKFLOW.md`).
+
+### Scripts
+
+```
+pip install python-docx
+```
+
+The page count in `check_document.py` also needs LibreOffice (`soffice`) and `pdfinfo` on the path. `docx_helpers.py` assumes a CV built on tables, with the role entries as paragraphs styled "List Paragraph"; change the style name if yours differs. `check_document.py` works on any `.docx`. `export_cv_text.py` is built for the same table template but also exports plain paragraphs. `review_round.sh` needs the Claude Code CLI. `build_dist.sh` rebuilds the zips in `dist/` after you edit a skill.
+
+## Terms used
+
+- **Receipt.** A specific thing you did, with a number or a name attached, which a reader could check.
+- **Inventory.** Your private file of receipts, dated and in your own words. It is canon: documents are built from it, and a fact that is not in it does not go on a page.
+- **Cast list.** Your private file of the people in your search: recruiters, hiring managers, referrers, with notes on how to handle each.
+- **Builder.** The main Claude session, which has your archive and writes the documents.
+- **Reviewer.** A fresh Claude session or subagent that sees only the job description, the CV and the style guide.
+- **Triage.** Deciding, for each reviewer finding, whether to accept it, reject it with a reason, or ask you.
+- **Bank.** To record a new fact in the inventory, dated and in your own words, on the day you disclose it.
+- **Rated base document.** A CV for one family of roles that has been reviewed and that you are content with. New builds copy its layout, never its wording.
+- **Knife pass.** A cutting pass over a draft: anything irrelevant, decorative, borrowed or repeated comes out.
+- **Seat.** The role being applied for.
+- **Live board.** The list of open processes, their stage and the next step for each.
 
 ## Principles, in one paragraph
 
-Open on the receipt. Say what you did, with a subject and a verb. State each number once. Never invent, and never let true facts compose into a claim you did not make. Read the prose law before every build; it does not survive being summarised. Ask questions before assuming a gap, because absence from the file is not absence from the career. Give a number with its reasoning and stop. Odds move on events, not on the calendar. Record new facts the day they are disclosed. When wrong, say what was wrong, fix it and record it.
+Open on the receipt: say what you did, with a subject and a verb. State each number once unless the sentence needs it twice. Never invent, and never let true facts compose into a claim you did not make. Read the prose law before every build, because it does not survive being summarised. Ask before assuming a gap, because absence from the file is not absence from the career. Let someone who has not seen the work read it before a recruiter does. Give a number with its reasoning and stop. Record new facts the day they are disclosed. When wrong, say what was wrong, fix it and record it.
 
 ## Licence
 

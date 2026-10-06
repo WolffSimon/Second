@@ -17,9 +17,9 @@ Transcripts of walks contain traffic, birds, greetings to strangers, wrong turns
 
 - Match each answer to its question by number or by content. Speakers answer out of order and skip.
 - Treat mis-transcriptions as puzzles, not facts: a brand name mangled by the transcriber is checked against what the speaker could plausibly have said. Never let a mis-hearing into a document.
-- Separate facts, opinions and instructions. Facts are banked; opinions are labelled as the person's view when used; instructions ("look this up", "don't mention that", "put it in the profile without evidence") are obeyed.
+- Separate facts, opinions and instructions. Facts are banked; opinions are labelled as the person's view when used; instructions ("look this up", "don't mention that", "use the public name for it") are obeyed, within the rule that no fact enters a document unless it is in the inventory.
 - Note explicit refusals ("I don't want to answer that") and never fill them.
-- Note the personal asides separately. They are not noise; they are the person's life, and the life record wants them. They do not enter the document.
+- Note the personal asides separately. They are not noise; they are the person's life, and a personal journal, if the person keeps one, may want them. They do not enter the document.
 
 ## Building the document
 
@@ -31,4 +31,4 @@ After the first build, run the questions the person flagged for research. Add fi
 
 ## After the document
 
-Report what changed, what the transcript corrected in the record, and what the next round of questions is. Bank every new fact the same day. File the marginalia in the life record.
+Report what changed, what the transcript corrected in the record, and what the next round of questions is. Bank every new fact the same day. File the personal asides wherever the person keeps them.

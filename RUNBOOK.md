@@ -1,28 +1,38 @@
 # Second: order of operations
 
 ## Session start, or after compaction
-1. Run `MASTER_PROMPT.md`.
+
+1. Have Claude re-read `MASTER_PROMPT.md` (it sits in the Project instructions or `CLAUDE.md`).
 2. Read the style guide in full. Read the inventory in full. Skim the cast list and the project context.
-3. State the live board in one paragraph and ask what is first.
+3. State the live board in one paragraph and ask what comes first.
 
 ## A new job description arrives
+
 1. Read it whole. Map every requirement to a receipt in the inventory, or to a gap.
-2. Assess honestly, in this order: fit, level against target, compensation with reasoning, odds as an over/under, the one or two decisive filters. Say what would make it a wrong seat.
-3. Wait for the decision. Build only on the word.
-4. Build with `skills/cv-build-from-jd`. Choose the nearest existing base; write the profile first, opening on the largest true claim for this seat; retune the blocks; place receipts in cells; judge certifications for this reader.
-5. Run `skills/second-pass-rubric`. Place inventory receipts; ask the questions; apply answers; bank them with `skills/receipts-inventory`.
-6. Run the embarrassment test: read every sentence as the person and ask whether they would be embarrassed to defend it across a table.
-7. Write any note with `skills/recruiter-notes`. Write any application-form paragraph as a box answer: the asks in their order, numbers canon, attribution honest.
-8. Add the journal line with `skills/compliance-journal`. Update the odds if the event moved them.
+2. Assess honestly, in this order: fit; level against the target; pay, with the reasoning in one line; the chances, as a rough percentage with the reasoning; the one or two filters that will decide it; what would make it the wrong role.
+3. Wait for the decision. Build only when the person says so.
+4. Build with `skills/cv-build-from-jd`, in protocol order: job description in full, inventory in full, build from scratch, prose law.
+5. Run `skills/second-pass-rubric`. Place receipts from the inventory, ask the questions, apply the answers, and bank them with `skills/receipts-inventory`.
+6. Run `skills/cold-review-loop`: a fresh reviewer each round, triage every finding. Stop when a round returns no high or medium finding that the builder can fix from the archive, or after three rounds. After the person answers the remaining questions, run one final round. Deliver the document with the questions that remain.
+7. Write any covering note with `skills/recruiter-notes`. Write any application-form answer as a direct reply to the question, in the order it asks, with canonical numbers.
+8. Add the journal line with `skills/compliance-journal`, if you keep one.
+
+## Several job descriptions arrive at once
+
+Assess each one first. For those the person wants built, follow "A wave of postings" in `WORKFLOW.md`: first drafts in parallel, one prose pass and one triage per draft in the main session, cold review rounds for each. Only the main session writes to the inventory.
 
 ## A voice note arrives
-Follow `skills/voice-note-to-document`: decode, answer each question asked, bank new facts, build or update the document, file marginalia separately, report what changed.
+
+Follow `skills/voice-note-to-document`: decode, answer each question asked, bank new facts, build or update the document, file personal asides separately, report what changed.
 
 ## A rejection arrives
-Close it on the ledger with its stated reason. Settle any bet on its definition. Restate the live board. Move the odds only if the event changed them.
+
+Close it on the board with its stated reason. Restate the live board. Revise the chances on other processes only if the rejection tells you something about them.
 
 ## A question about the person's own experience
+
 Run `skills/excavation-interview` before concluding a gap exists.
 
 ## Always
-Prose law on everything. Numbers once. Record same day. Correct and record when wrong.
+
+Prose law on everything. Each number once unless the sentence needs it twice. Record facts the same day. When wrong, correct it and record it.
