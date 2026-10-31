@@ -97,7 +97,7 @@ Stop when a round returns no high or medium finding that the builder can fix fro
 
 ### In Claude Code, as a subagent
 
-Copy `.claude/agents/cold-reviewer.md` into your project's `.claude/agents/`. A subagent starts with a fresh context and does not receive the main conversation. This one has only the Read tool and is set not to load `CLAUDE.md`. It can still read any file in the project if told to, so the isolation rests on its instructions and on the builder passing it only three paths. For isolation that does not depend on instructions, use the command-line route below, which copies the three files into an empty folder. Ask the builder:
+Installing Second as a plugin adds the `cold-reviewer` subagent. Without the plugin, copy `agents/cold-reviewer.md` into your project's `.claude/agents/`. A subagent starts with a fresh context and does not receive the main conversation. This one has only the Read tool and is set not to load `CLAUDE.md`. It can still read any file in the project if told to, so the isolation rests on its instructions and on the builder passing it only three paths. For isolation that does not depend on instructions, use the command-line route below, which copies the three files into an empty folder. Ask the builder:
 
 ```
 Run the cold-reviewer on review/JD.txt, review/CV_round1.txt and archive/Style_Guide.md.
@@ -115,7 +115,7 @@ bash scripts/review_round.sh review/JD.txt review/CV_round1.txt archive/Style_Gu
 
 An optional fourth argument describes the reader, for example `"a recruitment consultant, and behind them the hiring manager"`.
 
-If `ANTHROPIC_API_KEY` is set, the script adds `--bare`, which also skips your personal `CLAUDE.md`, skills, hooks and plugins. Without an API key, it runs with your normal login, and anything in `~/.claude/CLAUDE.md` will load. Keep personal facts out of that file if you use this route.
+Put `--bare` before the three files to run Claude Code in bare mode, which also skips your personal `CLAUDE.md`, skills, hooks and plugins. Bare mode needs Claude Code signed in with an API key. Without `--bare`, the review runs with your normal login, and anything in `~/.claude/CLAUDE.md` will load. Keep personal facts out of that file if you use this route.
 
 ### In Claude.ai
 

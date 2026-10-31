@@ -1,0 +1,8 @@
+{
+  "name": "wolffsimon-second",
+  "description": "Second by Matthew Wolff Simon: a human-first, AI-assisted job search.",
+  "owner": { "name": "Matthew Wolff Simon" },
+  "plugins": [
+    { "name": "second-coach", "source": "./" }
+  ]
+}

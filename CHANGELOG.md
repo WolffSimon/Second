@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.1.0, October 2026
+
+- **Second is now a Claude plugin**, named `second-coach` and shown as "Second". It can be installed from this repository in Claude Code, and it is being submitted to Anthropic's directory. New: `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json` and a listing icon.
+- The `cold-reviewer` subagent moves from `.claude/agents/` to `agents/`, where a plugin carries it.
+- The skill zips leave the repository for the Releases page. `scripts/build_dist.sh` still builds them into `dist/`, which is no longer committed.
+- `review_round.sh` no longer looks at your environment to decide on bare mode. Pass `--bare` to choose it.
+- The README says what Second runs and what it sends.
+
 ## 2.0.1, October 2026
 
 - `check_document.py` reports structural faults that make Word refuse to open a file (a table cell with nothing after its content, duplicate or unbalanced bookmarks, duplicate paragraph ids) and recognises a few more common verbs.

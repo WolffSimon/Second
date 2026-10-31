@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 # Zip each skill folder on its own into dist/, ready to upload to Claude.ai (Customize > Skills).
 # Usage: bash scripts/build_dist.sh
 set -euo pipefail

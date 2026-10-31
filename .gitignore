@@ -10,3 +10,6 @@ CLAUDE.md
 __pycache__/
 *.pyc
 .DS_Store
+
+# Built skill zips (attach them to a GitHub release instead)
+dist/

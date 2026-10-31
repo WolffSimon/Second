@@ -1,18 +1,24 @@
-#!/usr/bin/env bash
 # Run one cold review round with Claude Code, headless, in an empty temporary folder.
 #
-# Usage: bash scripts/review_round.sh JD.txt CV.txt STYLE_GUIDE.md ["description of the reader"] > report.md
+# Usage: bash scripts/review_round.sh [--bare] JD.txt CV.txt STYLE_GUIDE.md ["description of the reader"] > report.md
 #
 # The three files are copied into a fresh folder and Claude Code runs there in "dontAsk" mode:
 # reads inside that folder are allowed, anything that would need approval is refused, so the
-# reviewer cannot open your archive. If ANTHROPIC_API_KEY is set, --bare is added, which also
-# skips your CLAUDE.md, skills, hooks and plugins. Without it, ~/.claude/CLAUDE.md will load.
+# reviewer cannot open your archive. Pass --bare first to run Claude Code in bare mode, which also
+# skips your CLAUDE.md, skills, hooks and plugins (bare mode needs Claude Code signed in with an API
+# key). Without --bare, ~/.claude/CLAUDE.md will load.
 set -euo pipefail
 # Treat "&" in replacements literally (bash 5.2 and later would otherwise expand it).
 shopt -u patsub_replacement 2>/dev/null || true
 
+bare=""
+if [ "${1:-}" = "--bare" ]; then
+  bare="yes"
+  shift
+fi
+
 if [ $# -lt 3 ]; then
-  echo "usage: bash $0 JD.txt CV.txt STYLE_GUIDE.md [\"description of the reader\"]" >&2
+  echo "usage: bash $0 [--bare] JD.txt CV.txt STYLE_GUIDE.md [\"description of the reader\"]" >&2
   exit 2
 fi
 command -v claude >/dev/null || { echo "Claude Code CLI not found on PATH" >&2; exit 2; }
@@ -39,10 +45,10 @@ else
 fi
 
 flags=(-p "$prompt" --permission-mode dontAsk --output-format text)
-if [ -n "${ANTHROPIC_API_KEY:-}" ]; then
+if [ -n "$bare" ]; then
   flags=(--bare "${flags[@]}")
 else
-  echo "note: ANTHROPIC_API_KEY is not set, so the review runs without --bare and ~/.claude/CLAUDE.md will load" >&2
+  echo "note: running without --bare, so ~/.claude/CLAUDE.md will load" >&2
 fi
 
 cd "$work"

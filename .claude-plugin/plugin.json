@@ -1,0 +1,13 @@
+{
+  "name": "second-coach",
+  "displayName": "Second",
+  "version": "2.1.0",
+  "description": "A human-first job search with Claude as staff: CVs built from your own record, a writing law, questions before any gap is assumed, and a cold reviewer that reads every document before a recruiter does.",
+  "author": {
+    "name": "Matthew Wolff Simon"
+  },
+  "homepage": "https://github.com/WolffSimon/Second",
+  "repository": "https://github.com/WolffSimon/Second",
+  "license": "CC-BY-4.0 AND MIT",
+  "keywords": ["job-search", "cv", "resume", "writing", "review", "career"]
+}

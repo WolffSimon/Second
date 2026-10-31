@@ -42,7 +42,7 @@ BANNED = [
 # Common finite verb forms. Extend it if the check flags sentences that do have a verb.
 VERB_HINT = re.compile(
     r"\b(?:am|is|are|was|were|be|been|being|has|have|had|do|does|did|will|would|can|could|should|may|might|must|shall"
-    r"|ran|run|runs|built|builds?|wrote|writes?|led|leads?|owned|owns?|set|sets|created|creates?|took|takes?|held|holds?"
+    r"|ran|run|runs|built|builds?|wrote|writes?|led|leads?|owned|owns?|created|creates?|took|takes?|held|holds?"
     r"|made|makes?|grew|grows?|moved|moves?|put|kept|keeps?|went|goes|came|comes?|said|says?|gave|gives?|got|gets?"
     r"|saw|sees?|sat|left|found|brought|brings?|cut|cuts|paid|pays?|won|wins?|lost|met|taught|told|felt|began|spent|stood"
     r"|worked|works?|served?|serves|reported|reports?|delivered|delivers?|managed|manages?|designed|designs?|replaced|replaces?"

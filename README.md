@@ -53,10 +53,10 @@ Then, for a first session:
 | `skills/recruiter-notes` | Notes and messages to recruiters, hiring managers and referrers. |
 | `skills/compliance-journal` | A dated work-search record, for a benefits system, an outplacement coach or your own discipline. |
 | `skills/voice-note-to-document` | Dictate on a walk; come back to a document. |
-| `.claude/agents/cold-reviewer.md` | The reviewer as a Claude Code subagent, with read-only tools and without your `CLAUDE.md`. |
+| `agents/cold-reviewer.md` | The reviewer as a Claude Code subagent, with read-only tools and without your `CLAUDE.md`. |
 | `archive-templates/` | Empty starting files for your private archive. |
-| `scripts/` | Word-document helpers, a prose checker, a CV-to-text exporter, a headless review script and a script to rebuild `dist/`. |
-| `dist/` | One zip per skill, ready to upload to Claude.ai. |
+| `scripts/` | Word-document helpers, a prose checker, a CV-to-text exporter, a headless review script and a script that builds the skill zips. |
+| `.claude-plugin/` | The plugin manifest, the marketplace file and the listing icon. |
 
 ## The two layers
 
@@ -70,9 +70,20 @@ The builder reads the job description, reads the whole inventory, builds the CV 
 
 ## Setting up
 
+### As a plugin
+
+Second is packaged as a Claude plugin named `second-coach`. Once its listing in Anthropic's directory is live, add it from the directory on claude.ai, and it loads in Claude Code as well. In Claude Code you can also install it from this repository now:
+
+```
+claude plugin marketplace add WolffSimon/Second
+claude plugin install second-coach@wolffsimon-second
+```
+
+The plugin carries the skills and the `cold-reviewer` subagent. The archive, the master prompt and the templates are still yours to set up, as below.
+
 ### Claude.ai (web and desktop)
 
-1. Upload the skills. Go to Customize, then Skills, choose Add, and upload each zip from `dist/`. Each zip holds one skill folder with its `SKILL.md` at the root. Code execution must be enabled for skills to work. Skill names are lowercase with hyphens and under 64 characters, and each description is under 200 characters, as Claude.ai requires.
+1. Upload the skills. Go to Customize, then Skills, choose Add, and upload each zip from this repository's Releases page, or build them with `bash scripts/build_dist.sh`. Each zip holds one skill folder with its `SKILL.md` at the root. Code execution must be enabled for skills to work. Skill names are lowercase with hyphens and under 64 characters, and each description is under 200 characters, as Claude.ai requires.
 2. Create a Project for the search. Paste `MASTER_PROMPT.md`, with your details filled in, into the Project's instructions. Add `RUNBOOK.md`, `WORKFLOW.md` and your four archive files to the Project's knowledge.
 3. For cold reviews, open a new chat outside the Project, so the reviewer cannot see your archive. If your account has memory turned on, use an incognito chat, so the reviewer cannot draw on it either. Paste the brief from `skills/cold-review-loop/references/reviewer_brief.md`, attach the three files it names, and replace the three paths in the brief with the names of the attachments.
 
@@ -83,7 +94,7 @@ Whenever a long conversation is compacted, ask Claude to re-read the master prom
 ### Claude Code
 
 1. Copy each folder in `skills/` into `.claude/skills/` in your working directory, or into `~/.claude/skills/` for every project.
-2. Copy `.claude/agents/cold-reviewer.md` into `.claude/agents/` (or `~/.claude/agents/`). A subagent starts with a fresh context, so the builder can hand each review to it. This one has read-only tools and is set not to load `CLAUDE.md`.
+2. Copy `agents/cold-reviewer.md` into `.claude/agents/` (or `~/.claude/agents/`), unless you installed the plugin, which adds it. A subagent starts with a fresh context, so the builder can hand each review to it. This one has read-only tools and is set not to load `CLAUDE.md`.
 3. Keep your archive in a folder such as `archive/`, and paste the filled-in master prompt into the project's `CLAUDE.md` or into your first message.
 4. For a review from the command line, run `bash scripts/review_round.sh` (see `WORKFLOW.md`).
 
@@ -93,7 +104,11 @@ Whenever a long conversation is compacted, ask Claude to re-read the master prom
 pip install python-docx
 ```
 
-The page count in `check_document.py` also needs LibreOffice (`soffice`) and `pdfinfo` on the path. `docx_helpers.py` assumes a CV built on tables, with the role entries as paragraphs styled "List Paragraph"; change the style name if yours differs. `check_document.py` works on any `.docx`. `export_cv_text.py` is built for the same table template but also exports plain paragraphs. `review_round.sh` needs the Claude Code CLI. `build_dist.sh` rebuilds the zips in `dist/` after you edit a skill.
+The page count in `check_document.py` also needs LibreOffice (`soffice`) and `pdfinfo` on the path. `docx_helpers.py` assumes a CV built on tables, with the role entries as paragraphs styled "List Paragraph"; change the style name if yours differs. `check_document.py` works on any `.docx`. `export_cv_text.py` is built for the same table template but also exports plain paragraphs. `review_round.sh` needs the Claude Code CLI. `build_dist.sh` builds the skill zips into `dist/`, which is not committed.
+
+## What it runs and what it sends
+
+Second is written instructions, one subagent and a few scripts. The Python scripts read and edit the Word files you give them, on your own machine. `check_document.py` also runs LibreOffice and `pdfinfo` locally, if they are installed, to count pages. `review_round.sh` runs the Claude Code command-line tool on three files you name, which sends them to Anthropic as any Claude Code session does. Nothing in Second reads your credentials, tokens or environment variables, and nothing else leaves your machine.
 
 ## Terms used
 
